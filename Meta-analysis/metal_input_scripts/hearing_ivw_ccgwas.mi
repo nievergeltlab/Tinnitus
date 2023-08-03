@@ -1,0 +1,50 @@
+ # #just add the meta analysis to the other one, should be fine.
+ SCHEME STDERR
+  AVERAGEFREQ ON
+ MINMAXFREQ ON
+  TRACKPOSITIONS ON 
+  
+ CHROMOSOME CHROM
+ POSITION POS
+ MARKERLABEL   SNP
+ ALLELELABELS  A1 AX
+ PVALUELABEL   P 
+ EFFECTLABEL   log(OR)
+ STDERR LOG(OR)_SE
+ GENOMICCONTROL OFF
+ FREQLABEL A1_FREQ
+ ADDFILTER A1_FREQ >= 0.01
+
+ 
+ #88,782 cases and 151,291 controls = 240073
+ #DEFAULTWEIGHT 223797 #this is the effective sample size. Only minute difference in weights if using Neff vs N (48.9% given true n, 49.6% given neff
+ PROCESS MVP_hearing/eur_broad_mar172020_allchr.hearing.maf01.resultsa.fuma.gz
+
+ MARKERLABEL  SNP
+ ADDFILTER INFO > 0.6
+ CHROMOSOME CHR
+ POSITION BP
+ ALLELELABELS  ALLELE1 ALLELE0
+ FREQLABEL A1FREQ
+ ADDFILTER A1FREQ >= 0.01
+ EFFECTLABEL log(OR)
+ STDERR SE
+ PVALUELABEL P
+ 
+ #87056 case subjects and 163333 control subjects, https://www.sciencedirect.com/science/article/pii/S0002929719303477?via%3Dihub#fig1
+ #IV hearing must be rescaled! this was done in that linearprogram !
+ 
+ #zcat hearing_difficulty_wells_ukbb/HD_EA_gwas_sumstats.txt.gz | awk '{prev=87056/(87056+163333); if(NR==1) $8="OR"; if (NR>1) {$8=exp($8 /( prev *(1-prev))); $9 = $9  /( prev *(1-prev))}; print }' | gzip > hearing_difficulty_wells_ukbb/HD_EA_gwas_sumstats.txt.gz.linprobit.fuma.gz 
+ 
+ #DEFAULTWEIGHT 227152 #effective N. True N is 250389
+ PROCESS hearing_difficulty_wells_ukbb/HD_EA_gwas_sumstats.txt.gz.linprobit.fuma.gz 
+ 
+OUTFILE metal_results/hearing_meta/ukbb_hd_mvp_hearing_dec17_2020_vw .tbl
+
+ANALYZE 
+QUIT
+
+#0.965922 0.00355692
+#1.07622 0.0150692
+
+#rma(yi=c(log(1/0.8705),log(1.07622)),sei=c(0.0142277,0.0150692),method="FE")

@@ -1,0 +1,37 @@
+q # #just add the meta analysis to the other one, should be fine.
+
+ MARKERLABEL   SNP
+ ALLELELABELS  A1 AX
+ PVALUELABEL   P 
+ EFFECTLABEL   log(OR)
+ SCHEME SAMPLESIZE
+ #STDERR SE 
+ GENOMICCONTROL OFF
+ #CUSTOMVARIABLE OBS_CT 
+ #WEIGHTLABEL OBS_CT
+ FREQLABEL A1_FREQ
+ AVERAGEFREQ ON
+ MINMAXFREQ ON
+ ADDFILTER A1_FREQ >= 0.01
+ TRACKPOSITIONS ON 
+ CHROMOSOME CHROM
+ POSITION POS
+ 
+DEFAULTWEIGHT 281398 #this is the effective sample size
+ PROCESS MVP_tinnitus/eur_broad_mar172020_allchr.broad_tinnitus.maf01.resultsa.fuma.gz
+
+#DEFAULTWEIGHT 3956
+# PROCESS asn_broad_mar172020_allchr.broad_tinnitus.maf01.resultsa.fuma.gz
+
+#DEFAULTWEIGHT 50044
+# PROCESS MVP_tinnitus/his_broad_mar172020_allchr.broad_tinnitus.maf01.resultsa.fuma.gz
+
+#DEFAULTWEIGHT 27821
+ PROCESS MVP_tinnitus/aam_broad_mar172020_allchr.broad_tinnitus.maf01.resultsa.fuma.gz
+
+
+
+OUTFILE metal_results/mvp_transethnic_broad_may26_2021_aam_eur .tbl
+ANALYZE 
+QUIT
+

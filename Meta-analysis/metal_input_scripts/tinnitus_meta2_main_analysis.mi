@@ -1,0 +1,39 @@
+ # #just add the meta analysis to the other one, should be fine.
+
+ MARKERLABEL   SNP
+ ALLELELABELS  A1 AX
+ PVALUELABEL   P 
+ EFFECTLABEL   log(OR)
+ SCHEME SAMPLESIZE
+ #STDERR SE 
+ GENOMICCONTROL OFF
+ #CUSTOMVARIABLE OBS_CT 
+ WEIGHTLABEL OBS_CT
+ FREQLABEL A1_FREQ
+ AVERAGEFREQ ON
+ MINMAXFREQ ON
+ ADDFILTER A1_FREQ >= 0.01
+ TRACKPOSITIONS ON 
+ CHROMOSOME CHROM
+ POSITION POS
+ 
+ #DEFAULTWEIGHT 294341 #This is the new Effective N, as of July 12, 2021 - 120934 cases and 187945 controls = 308879 subjects . neff = 294341
+ PROCESS MVP_tinnitus/eur_jul8_2021_allchr.any_tinnitus.maf01.ADD.resultsa.fuma.gz
+
+ MARKERLABEL  SNP
+ ADDFILTER INFO > 0.6
+ CHROMOSOME CHR
+ POSITION BP
+ ALLELELABELS  ALLELE1 ALLELE0
+ FREQLABEL A1FREQ
+ ADDFILTER A1FREQ >= 0.01
+ EFFECTLABEL BETA
+ PVALUELABEL P
+ 
+ DEFAULTWEIGHT  175995  # 158490 in file with covar, out of the 175995   total
+ PROCESS UKB_tinnitus/f.4803.max_coding3_no_covar_related.bgen.stats.fuma.gz 
+ 
+OUTFILE metal_results/ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw_withhet .tbl
+ANALYZE HET
+QUIT
+

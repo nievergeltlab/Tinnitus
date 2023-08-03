@@ -1,0 +1,26 @@
+#Determine if inversion itself is associated
+
+library(rma)
+
+z score meta analysis of ukb and mvp
+
+zv <- scan(what=numeric())
+1.18614
+3.51313
+-1.06793
+0.859791175
+2.153350423
+-0.516625465
+
+
+nv <- scan(what=numeric())
+92083
+150480
+61444
+53909
+84590
+32768
+
+library(metafor)
+rma(yi=zv,sei=rep(1,length(zv)),weights=sqrt(nv),method="FE")
+

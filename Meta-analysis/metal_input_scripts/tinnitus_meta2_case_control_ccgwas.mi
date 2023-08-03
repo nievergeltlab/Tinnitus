@@ -1,0 +1,57 @@
+tinnitus_meta2.mi # #just add the meta analysis to the other one, should be fine.
+ SCHEME STDERR
+  AVERAGEFREQ ON
+ MINMAXFREQ ON
+  TRACKPOSITIONS ON 
+  
+ CHROMOSOME CHROM
+ POSITION POS
+ MARKERLABEL   SNP
+ ALLELELABELS  A1 AX
+ PVALUELABEL   P 
+ EFFECTLABEL   log(OR)
+ STDERR LOG(OR)_SE
+ GENOMICCONTROL OFF
+ FREQLABEL A1_FREQ
+ ADDFILTER A1_FREQ >= 0.01
+
+ 
+ #DEFAULTWEIGHT 294341 #This is the new Effective N, as of July 12, 2021 - 120934 cases and 187945 controls = 308879 subjects . neff = 294341
+ DEFAULTWEIGHT 308879 # for the IVW model, it will be easier to just list the Ns
+ PROCESS MVP_tinnitus/eur_jul8_2021_allchr.any_tinnitus.maf01.ADD.resultsa.fuma.gz
+
+ MARKERLABEL  SNP
+ ADDFILTER INFO > 0.6
+ CHROMOSOME CHR
+ POSITION BP
+ ALLELELABELS  ALLELE1 ALLELE0
+ FREQLABEL A1FREQ
+ ADDFILTER A1FREQ >= 0.01
+ EFFECTLABEL log(OR)
+ STDERR SE
+ PVALUELABEL P
+ 
+ #tinnitus needs to be converted to logit scale
+ 
+ #zcat UKB_tinnitus/f.4803.max_coding3_no_covar_related.bgen.stats.fuma.gz | awk '{prev=52769/(120226+52769); if(NR==1) $8="OR"; if (NR>1) {$8=exp($8 / 4 /( prev *(1-prev))); $9 = $9 / 4 /( prev *(1-prev))}; print }' | gzip > UKB_tinnitus/f.4803.max_coding3_no_covar_related.bgen.stats.linprobit.fuma.gz 
+ DEFAULTWEIGHT 175995
+ PROCESS UKB_tinnitus/f.4803.max_coding3_no_covar_related.bgen.stats.linprobit.fuma.gz 
+ 
+OUTFILE metal_results/ukbb_linprobit_mvp_tinnitus_ivw .tbl
+
+
+#This is how you convert bolt LMM to straight up OR
+  #DEFAULTWEIGHT=146691
+  #zcat /mnt/ukbb/royce/tinnitus_unrelated/tinnitus_no_covar_unrelated/f.4803.max_coding2_males_no_covar_unrelated.bgen.stats.fuma.gz | awk '{prev=52769/(120226+52769); if (NR>1) {$8=exp($8 / prev *(1-prev))} ; print }' | gzip > f.4803.max_coding2_males_no_covar_unrelated.bgen.stats.logit.fuma.gz
+  #EFFECTLABEL BETA
+  #PROCESS f.4803.max_coding2_males_no_covar_unrelated.bgen.stats.logit.fuma.gz
+  #OUTFILE metal_results/ukbb_case2_mvp_tinnitus_ivw .tbl
+
+#This is the alternative procedure for transformation - linear regression of ac ontinous variable, rescaled to OR.
+ zcat UKB_tinnitus/f.4803.max_coding3_no_covar_related.bgen.stats.fuma.gz | awk '{lambda=1.8138; if(NR==1) $8="OR"; if (NR>1) {$8=exp(lambda*$8 /$9); $9 = lambda*$9 /$9}; print }' | gzip > UKB_tinnitus/f.4803.max_coding3_no_covar_related.bgen.stats.oddsmoser.fuma.gz 
+ 
+
+
+ANALYZE 
+QUIT
+

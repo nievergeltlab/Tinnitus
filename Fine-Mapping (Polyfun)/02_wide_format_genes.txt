@@ -1,0 +1,12 @@
+#From genes.txt, obtain a wide format list of genes in the risk locus
+library(data.table)
+d1 <- fread('tinnitus_eur_genes.credible.fuma.txt',data.table=F)
+d1 <- subset(d1,remove==FALSE)
+
+namesymbol <- function(x)
+{
+  paste(sort(x$symbol),sep=",",collapse=",")
+}
+
+write.table(ddply(d1, ~ old_locus, namesymbol),"eur_genes.credible.fuma.txt.flat.txt",quote=F,row.names=F)
+
