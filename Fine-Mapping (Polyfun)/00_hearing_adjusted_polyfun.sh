@@ -17,7 +17,7 @@ python /home/genetics/polyfun/munge_polyfun_sumstats.py --sumstats ukbbcoding3re
  
  
  
-# #Remove the not foudn SNPs - this is a bit dangerous
+# #Remove the not found SNPs 
 # R
 # library(data.table)
 # d1 <- fread('ukbbcoding3relatedhearcov_mvpanytinnitusanyhear_ssw1.tbl.fuma.gz.premunge',data.table=F)
