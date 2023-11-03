@@ -21,7 +21,6 @@ LC_ALL=C join -1 1 -2 3  <(awk '{print $1}' w_hm3.snplist.sorted | LC_ALL=C sort
 LC_ALL=C join -1 1 -2 3  <(awk '{print $1}' w_hm3.snplist.sorted | LC_ALL=C sort -k1b,1 ) <(zcat metal_results/hearing_meta/ukbb_hd_mvp_hearing_dec17_20201.tbl.fuma.gz | awk '{if (NR == 1) $3="SNP"; print}'  | LC_ALL=C sort -u -k3b,3 ) > metal_results/hearing_meta/ukbb_hd_mvp_hearing_dec17_20201.tbl.fuma.gz.premunge
  /mnt/ukbb/adam/tinnitus_gwas/ldsc-master/munge_sumstats.py --chunksize 500000  --sumstats metal_results/hearing_meta/ukbb_hd_mvp_hearing_dec17_20201.tbl.fuma.gz.premunge  --merge-alleles UKB_tinnitus/f.4803.max_coding3_no_covar_related.bgen.stats.fuma.gz.premunge.alleles  --out metal_results/hearing_meta/ukbb_hd_mvp_hearing_dec17_20201.tbl.fuma.gz.munge.gz #add --N-col OBS_CT for the sample size
 
-
 #MVP HEARING
 LC_ALL=C join -1 1 -2 1  <(awk '{print $1}' w_hm3.snplist.sorted | LC_ALL=C sort -k1b,1 ) <(zcat MVP_hearing/eur_broad_mar172020_allchr.hearing.maf01.resultsa.fuma.gz   | awk '{if (NR==1) {$5="A2"; $8="N";$10="SE";} print}' | LC_ALL=C sort -u -k1b,1 ) > MVP_hearing/eur_broad_mar172020_allchr.hearing.maf01.resultsa.fuma.gz.premunge
  /mnt/ukbb/adam/tinnitus_gwas/ldsc-master/munge_sumstats.py --chunksize 500000  --sumstats MVP_hearing/eur_broad_mar172020_allchr.hearing.maf01.resultsa.fuma.gz.premunge --N 223797 --a2 AX --merge-alleles UKB_tinnitus/f.4803.max_coding3_no_covar_related.bgen.stats.fuma.gz.premunge.alleles --out MVP_hearing/eur_broad_mar172020_allchr.hearing.maf01.resultsa.fuma.gz.munge.gz #add --N-col OBS_CT for the sample size
@@ -72,32 +71,6 @@ LC_ALL=C join -1 1 -2 1  <(awk '{print $1}' w_hm3.snplist.sorted | LC_ALL=C sort
 /mnt/ukbb/adam/tinnitus_gwas/ldsc-master/munge_sumstats.py --chunksize 500000  --sumstats mendelian_randomization_inputs/TS_Oct2018.gz.premunge --N 14307 --merge-alleles f.4803.max_coding3_no_covar_related.bgen.stats.fuma.alleles --out mendelian_randomization_inputs/TS_Oct2018.gz.munge.gz
  
  
-  
- 
-#Hearing
-
-LC_ALL=C join -1 1 -2 1  <(awk '{print $1}' w_hm3.snplist.sorted | LC_ALL=C sort -k1b,1 ) <(cat mendelian_randomization_inputs/GERA-EUR-ARHI.mtcojo  |  LC_ALL=C sort -u -k1b,1 ) > mendelian_randomization_inputs/GERA-EUR-ARHI.mtcojo.premunge
-/mnt/ukbb/adam/tinnitus_gwas/ldsc-master/munge_sumstats.py --chunksize 500000  --sumstats mendelian_randomization_inputs/GERA-EUR-ARHI.mtcojo.premunge --merge-alleles f.4803.max_coding3_no_covar_related.bgen.stats.fuma.alleles --out GERA-EUR-ARHI.mtcojo.munge.gz
- 
-
-#Insomnia
-LC_ALL=C join -1 1 -2 1  <(awk '{print $1}' w_hm3.snplist.sorted | LC_ALL=C sort -k1b,1 ) <(zcat mendelian_randomization_inputs/Insomnia_sumstats_Jansenetal.txt.gz  | awk '{if (NR == 1 || (length($5) == 1 && length($6) == 1)) print}' |  LC_ALL=C sort -u -k1b,1 ) > mendelian_randomization_inputs/Insomnia_sumstats_Jansenetal.txt.gz.premunge
-zcat  metal_results/ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.munge.gz.sumstats.gz | awk '{print $1,$2,$3}' >  metal_results/ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.munge.gz.sumstats.gz.alleles
-/mnt/ukbb/adam/tinnitus_gwas/ldsc-master/munge_sumstats.py --chunksize 500000  --sumstats mendelian_randomization_inputs/Insomnia_sumstats_Jansenetal.txt.gz.premunge --merge-alleles  UKB_tinnitus/f.4803.max_coding3_no_covar_related.bgen.stats.fuma.gz.premunge.alleles --out mendelian_randomization_inputs/Insomnia_sumstats_Jansenetal.txt.gz.munge.gz
- 
-
-
-#Hearing2
-
-LC_ALL=C join -1 1 -2 1  <(awk '{print $1}' w_hm3.snplist.sorted | LC_ALL=C sort -k1b,1 ) <(cat mendelian_randomization_inputs/GERA-EUR-ARHI.mtcojo  |  LC_ALL=C sort -u -k1b,1 ) > mendelian_randomization_inputs/GERA-EUR-ARHI.mtcojo.premunge
-/mnt/ukbb/adam/tinnitus_gwas/ldsc-master/munge_sumstats.py --chunksize 500000  --sumstats mendelian_randomization_inputs/GERA-EUR-ARHI.mtcojo.premunge --merge-alleles f.4803.max_coding3_no_covar_related.bgen.stats.fuma.alleles --out GERA-EUR-ARHI.mtcojo.munge.gz
- 
-
-
-
-hearing_difficulty_wells_ukbb/HD_EA_gwas_sumstats.txt.gz.linprobit.fuma.gz.munge.gz
-
-
 #Get genetic correlations
 for analysis in  adhd_eur_jun2017.gz.munge.gz.sumstats.gz Insomnia_sumstats_Jansenetal.txt.gz.munge.gz.sumstats.gz  GERA-EUR-ARHI.mtcojo.munge.gz.sumstats.gz  SA_in_MDD_BIP_SCZ_2019.gz.munge.gz.sumstats.gz  adhd_eur_jun2017.gz.munge.gz.sumstats.gz pgc_alcdep.eur_discovery.aug2018_release.txt.gz.munge.gz.sumstats.gz pgcAN2.2019-07.vcf.tsv.gz.munge.gz.sumstats.gz anxiety.meta.full.cc.tbl.gz.munge.gz.sumstats.gz iPSYCH-PGC_ASD_Nov2017.gz.munge.gz.sumstats.gz daner_PGC_BIP32b_mds7a_0416a.gz.munge.gz.sumstats.gz Cannabis_ICC_UKB_het.txt.gz.munge.gz.sumstats.gz PGC_UKB_depression_genome-wide.txt.munge.gz.sumstats.gz ocd_aug2017.gz.munge.gz.sumstats.gz eur_PTSD_Continuous_m0_pcs_alldata_may8_2020.fuma.gz.munge.gz.sumstats.gz PGC3_SCZ_wave3_public.v2.tsv.gz.munge.gz.sumstats.gz  TS_Oct2018.gz.munge.gz.sumstats.gz 
 do
@@ -119,29 +92,26 @@ outname=$(echo $analysis | cut -d "." -f1)
    done
    
    
-   #rg to meta hearing
-   
+  #rg of UKBB tinnitus to meta hearing
   python2   /mnt/ukbb/adam/tinnitus_gwas/ldsc-master/ldsc.py \
  --rg  UKB_tinnitus/f.4803.max_coding3_no_covar_related.bgen.stats.fuma.gz.munge.gz.sumstats.gz,metal_results/hearing_meta/ukbb_hd_mvp_hearing_dec17_20201.tbl.fuma.gz.munge.gz.sumstats.gz \
  --ref-ld-chr /mnt/ukbb/royce/eur_w_ld_chr/ \
  --w-ld-chr  /mnt/ukbb/royce/eur_w_ld_chr/ \
  --out rgs/ukbtinnitus_metahearing
- 
+
+ #rg of MVP tinnitus to meta hearing
   python2    /mnt/ukbb/adam/tinnitus_gwas/ldsc-master/ldsc.py \
  --rg  MVP_tinnitus/eur_jul8_2021_allchr.any_tinnitus.maf01.ADD.resultsa.fuma.gz.munge.gz.sumstats.gz,metal_results/hearing_meta/ukbb_hd_mvp_hearing_dec17_20201.tbl.fuma.gz.munge.gz.sumstats.gz \
  --ref-ld-chr /mnt/ukbb/royce/eur_w_ld_chr/ \
  --w-ld-chr  /mnt/ukbb/royce/eur_w_ld_chr/ \
  --out rgs/mvptinnitus_metahearing
- 
+
+  #rg of meta tinnitus to meta hearing
   python2    /mnt/ukbb/adam/tinnitus_gwas/ldsc-master/ldsc.py \
  --rg  metal_results/ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.munge.gz.sumstats.gz,metal_results/hearing_meta/ukbb_hd_mvp_hearing_dec17_20201.tbl.fuma.gz.munge.gz.sumstats.gz \
  --ref-ld-chr /mnt/ukbb/royce/eur_w_ld_chr/ \
  --w-ld-chr  /mnt/ukbb/royce/eur_w_ld_chr/ \
  --out rgs/metatinnitus_metahearing
- 
- 
- 
- #
 
   
   
