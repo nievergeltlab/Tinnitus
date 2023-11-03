@@ -17,17 +17,16 @@ conda activate polyfun
 
 #Premunge - capitalize A1 and A2, name MAF and N columns, change X to 23.
 
-#The X chromosome is not present in polyfun.. just remove it.
+#The X chromosome is not present in the Polyfun.. just remove it to prevent complications
 zcat ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz | awk '{if(NR==1) { $3="SNP"; $4="A1";$5="A2";$6="MAF";$7="N"; $8="Z";$9="P"}; if (NR>1) {$4=toupper($4); $5=toupper($5)};  print}' | grep -v X > ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.premunge
 
+#Munge sumstats to polyfun format
 python /home/genetics/polyfun/munge_polyfun_sumstats.py --sumstats ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.premunge --out ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun
 
-#Calculate priors - using approach 1 of pre-computed prior stuff
+#Attempt to calculate priors. This is to identify the SNPs that are not in the reference, to remove them for subsequent analyses
  python /home/genetics/polyfun/extract_snpvar.py --sumstats ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun --out ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun_prior
  
- 
- 
-#Remove the not foudn SNPs - this is a bit dangerous
+#I manually remove the SNPs that are not in the reference. There is a command to just ignore them (I was not aware of this originally)
 R
 library(data.table)
 d1 <- fread('ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.premunge',data.table=F)
@@ -40,16 +39,15 @@ write.table(d1a,file='ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.
 python /home/genetics/polyfun/munge_polyfun_sumstats.py --sumstats ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.premunge --out ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun
 
 
-
-#Calculate priors - using approach 1 of pre-computed prior stuff
+#Calculate priors (for real this time) - using approach 1 of pre-computed prior stuff detailed on polyfun wiki
  python /home/genetics/polyfun/extract_snpvar.py --sumstats ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun --out ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun_prior
  
 mkdir output
 
-#We should set max-num causal to 1, per author recommendations as we don't ahve good LD, but this generates NULL results! 
+#This file is pulled from the excel, detailing locus information and reference file. Format to linux in case excel has bungled the new lines:
 dos2unix tinnitus_finemaplist_withrefs.csv
 
-#Need SNPVAR column
+#Polyfun analysis. Run with 2 causal variants. The LD files are downloaded. This is out of date, now you have to pay to download these.
 IFS=$'\n'
 for snpset in $(cat tinnitus_finemaplist_withrefs.csv | head -n2 )
 do
@@ -63,17 +61,7 @@ fileld=$(echo $snpset | awk 'BEGIN{FS=","}{print $5}')
 
   wget https://storage.googleapis.com/broad-alkesgroup-public/UKBB_LD/"$fileld".gz
   wget https://storage.googleapis.com/broad-alkesgroup-public/UKBB_LD/"$fileld".npz
-  
-    # python /home/genetics/polyfun/finemapper.py \
-    # --sumstats ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun_prior \
-    # --chr $chr \
-    # --n 470336 \
-    # --start  $start 	  \
-    # --end $stop   \
-    # --method susie \
-    # --max-num-causal 1 \
-    # --out output/finemapLD_1.inform.EUR."$snp"."$chr"."$start"."$stop".gz
-    
+
     python /home/genetics/polyfun/finemapper.py \
         --ld "$fileld" \
     --sumstats ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun_prior \
@@ -84,48 +72,12 @@ fileld=$(echo $snpset | awk 'BEGIN{FS=","}{print $5}')
     --method susie \
     --max-num-causal 2 \
     --out output/finemapLD_2.inform.EUR."$snp"."$chr"."$start"."$stop".gz
-        
-    # python /home/genetics/polyfun/finemapper.py \
-        # --ld "$fileld" \
-    # --sumstats ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun_prior \
-    # --chr $chr \
-    # --n 470336 \
-    # --start  $start 	  \
-    # --end $stop   \
-    # --method susie \
-    # --max-num-causal 3 \
-    # --out output/finemapLD_3.inform.EUR."$snp"."$chr"."$start"."$stop".gz
-            
-      # python /home/genetics/polyfun/finemapper.py \
-          # --ld "$fileld" \
-    # --sumstats ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun_prior \
-    # --chr $chr \
-    # --n 470336 \
-    # --start  $start 	  \
-    # --end $stop   \
-    # --method susie \
-    # --max-num-causal 4 \
-    # --out output/finemapLD_4.inform.EUR."$snp"."$chr"."$start"."$stop".gz
-       
-
-    # python /home/genetics/polyfun/finemapper.py \
-        # --ld "$fileld" \
-    # --sumstats ukbbcoding3relatednocov_mvpanytinnitusnocov_ssw1.tbl.fuma.gz.polyfun_prior \
-    # --chr $chr \
-    # --n 470336 \
-    # --start  $start 	  \
-    # --end $stop   \
-    # --method susie \
-    # --max-num-causal 5 \
-    # --out output/finemapLD_5.inform.EUR."$snp"."$chr"."$start"."$stop".gz
-      
-        
+     
       rm "$fileld".gz "$fileld".npz
-    
-      
+     
 done
 
-
+#Take the outputs from polyfun and filter them a bit
 IFS=$'\n'
 for snpset in $(cat tinnitus_finemaplist_withrefs.csv | head -n2)
 do
@@ -136,16 +88,17 @@ start=$(echo $snpset | awk 'BEGIN{FS=","}{print $3}')
 stop=$(echo $snpset | awk 'BEGIN{FS=","}{print $4}')
 fileld=$(echo $snpset | awk 'BEGIN{FS=","}{print $5}')
 
-#Get markers in credible set
+#Get just the markers in credible set
 zcat output/finemapLD_2.inform.EUR."$snp"."$chr"."$start"."$stop".gz | awk -v leadsnp=$snp '{if (NR==1 || $15=="1") print leadsnp, $0}' > output_filtered/finemapLD.inform.EUR."$snp"."$chr"."$start"."$stop".credible
 
-#all markers
+#Get all results
 zcat output/finemapLD_2.inform.EUR."$snp"."$chr"."$start"."$stop".gz | awk -v leadsnp=$snp '{print leadsnp, $0}' > output_filtered/finemapLD.inform.EUR."$snp"."$chr"."$start"."$stop".allsnps
 
 done
 
+#Stack results together
 
-#Creible set
+#Credible markers
 cat output_filtered/*.credible | awk '{if(NR==1){$1="Locus"}; if(NR==1 || $2 != "CHR") print}' > finemapLD.inform.EUR.complete.txt
 
 #all markers
@@ -154,7 +107,7 @@ cat output_filtered/*.allsnps | awk '{if(NR==1){$1="Locus"}; if(NR==1 || $2 != "
 
 
 
-### transancestry analysis
+### transancestry analysis (methods follow above)
 
 #Premunge - capitalize A1 and A2, name MAF and N columns, change X to 23.
 
