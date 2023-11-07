@@ -1,5 +1,5 @@
 # Tinnitus  
-Codebase for 2023 Tinnitus GWAS manuscript
+Codebase for 2023 Tinnitus GWAS manuscript (Clifford, Maihofer,..., Nievergelt)
 
 Most analyses follow a main script that has been commented. Read for details.
 
@@ -33,7 +33,7 @@ Inversion calling for chromosome 8
 01_inversion_status_z.txt: meta-analysis of inversion results to determine whether the inversion itself is associated with tinnitus
 
 
-## rg
+### rg
 Genetic correlations of tinnitus to other phenotypes
 
 00_rg_to_psychiatric_traits.sh: LDSC rg calculations with PGC psychiatric disorders
