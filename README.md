@@ -25,12 +25,27 @@ Polyfun based finemapping for summary statistics
 02_wide_format_genes.txt: Manipulate genes.txt from FUMA to obtain a wide format list of genes within the risk locus
 ldfiles_polyfun_tinnitus.xlsx: Polyfun requires huge LD reference files. The presupplied files cover specific windows. This file is used to determine which LD reference dataset file should be downloaded
 
+
+
 ### inversion
 Inversion calling for chromosome 8
 
+### MiXeR
+Genetic architecture (univaraite and bivariate)
+00_prepare_files.sh: Format files into MiXeR format
+01_mixer_univariate.sh: Do univariate tests
+02_mixer_univariate_plots.sh: Make univariate plots
+03_mixer_bivariate.sh: Do bivariate tests
+04_mixer_bivariate_plots.sh: Make bivariate plots
+
+
 00_chr8_inversion_calling.sh: Calling in the UKBB data
 01_gwas_stratified_by_inversion.sh: Perform tinnitus GWAS stratified by inversion status
+inversion.mi - script to perform meta-analysis of inversion stratified GWAS
 01_inversion_status_z.txt: meta-analysis of inversion results to determine whether the inversion itself is associated with tinnitus
+
+### PRS
+Polygenic risk score calculation
 
 
 ### rg
