@@ -10,6 +10,7 @@ Code to perform GWAS
 #### UKB
 00_make_tinnitus_phenotype.sh: Construct tinnitus phenotype  
 00_tinnitus_ukbb_gwas_v2.sh: Perform GWAS  
+01_gwas_stratified_by_inversion.sh: Perform tinnitus GWAS stratified by inversion status  
 
 #### MVP
 00_tinnitus_covmarker_mar17_2020.sh: Make tinnitus phenotype/covariates  
@@ -43,17 +44,29 @@ Polyfun based finemapping for summary statistics
 02_wide_format_genes.txt: Manipulate genes.txt from FUMA to obtain a wide format list of genes within the risk locus
 ldfiles_polyfun_tinnitus.xlsx: Polyfun requires huge LD reference files. The presupplied files cover specific windows. This file is used to determine which LD reference dataset file should be downloaded
 
+### Cochlea
+Cochlea cell type enrichment analyses  
 
+01_magma_lui.sh: Enrichment analysis of Hoa et al. dataset  
+01_magma_michalski.sh: Enrichment of Jean et al. dataset  
+02_barplot...: code to make bar plots  
+
+### GSEM
+Genomic SEM analysis
+
+00_gsem_step1.sh: Prepare files for input into GSEM  
+01_gsem_psych.sh: GSEM of psychiatric disorders with tinnitus  
+01_gsem_other.r: GSEM of expanded set of phenotypes with tinnitus  
 
 ### inversion
 Inversion calling for chromosome 8
 
 00_mvp_inversion_analysis.r: Inversion association analysis in the MVP  
-00_chr8_inversion_calling.sh: Calling in the UKBB data  
-01_gwas_stratified_by_inversion.sh: Perform tinnitus GWAS stratified by inversion status  
-inversion.mi - script to perform meta-analysis of inversion stratified GWAS  
+00_chr8_inversion_calling.sh: Inversion calling in the UKBB data  
 01_inversion_status_z.txt: meta-analysis of inversion results to determine whether the inversion itself is associated with tinnitus  
-  
+ 
+inversion.mi - script to perform meta-analysis of inversion stratified GWAS  
+ 
 ### MiXeR
 Genetic architecture (univaraite and bivariate)  
 
