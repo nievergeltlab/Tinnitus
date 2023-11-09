@@ -51,36 +51,29 @@ peur <- read.table('/home/home1/vhasdcmaihoa/mvp039/AM/tinnitus_paper2_prs_mvpr3
 #paam <- fread('/home/home1/vhasdcmaihoa/mvp039/AM/tinnitus_paper2_prs_mvpr3/PCLsum_aam_oct24_2022.pheno',data.table=F)
 
 peur$race <- "eur"
-#paam$race <- "aam"
 
 pceur <- read.table('/home/home1/vhasdcmaihoa/mvp039/AM/tinnitus_paper2_prs_mvpr3/eur_pca.eigenpc.txt',stringsAsFactors=F,header=T)
-#pcaam <- fread('/home/home1/vhasdcmaihoa/mvp039/AM/tinnitus_paper2_prs_mvpr3/aam_pca.eigenpc.txt',data.table=F)
 
 deur0 <- merge(peur,pceur,by=c("FID","IID"))
 deur1 <- merge(deur0,prs,by="FID")
 
-#aamcount <- dim(paam)[1] #Only do this many europeans
 deur <- deur1#[sample(1:dim(deur1)[1], aamcount,replace=F),]
 
 
-#daam0 <- merge(paam,pcaam,by=c("FID","IID"))
-#daam <- merge(daam0,prs,by="FID")
+#quantilized for plotting, scaled for inference
 deur$prsscale <- scale(deur$TSCORE,center=TRUE,scale=TRUE)
 
 deur$prsquantile <- cut(deur$TSCORE,breaks=quantile(deur$TSCORE,seq(0,1,0.2)))
-#daam$prsquantile <- cut(daam$TSCORE,breaks=quantile(daam$TSCORE,seq(0,1,0.2)))
 
-m1eur <- summary(glm(broad1~ PC1+PC2+PC3+PC4+PC5+prsquantile,data=deur,family='binomial'))$coefficients[7:10,1:2]
+m1eur <- summary(glm(broad1~ PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10+prsquantile,data=deur,family='binomial'))$coefficients[7:10,1:2]
 
-m1eur <- summary(glm(broad1~ PC1+PC2+PC3+PC4+PC5+prsscale,data=deur,family='binomial'))$coefficients[7:10,1:2]
+m1eur <- summary(glm(broad1~ PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10+prsscale,data=deur,family='binomial'))$coefficients[7:10,1:2]
 
 
-#m1aam <- summary(glm(I(PCL_sum >= 45) ~ PC1+PC2+PC3+PC4+PC5+prsquantile,data=daam,family='binomial'))$coefficients[7:10,1:2]
 
 library(fmsb)
-#NagelkerkeR2(glm(I(PCL_sum >= 45) ~ PC1+PC2+PC3+PC4+PC5+TSCORE,data=daam,family='binomial'))
-NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5+TSCORE,data=deur,family='binomial'))
 
+NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5+TSCORE,data=deur,family='binomial'))
 NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5,data=deur,family='binomial'))
 
 
