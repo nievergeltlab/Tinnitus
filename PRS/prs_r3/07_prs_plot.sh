@@ -73,8 +73,8 @@ m1eur <- summary(glm(broad1~ PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10+prsscale,d
 
 library(fmsb)
 
-NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5+TSCORE,data=deur,family='binomial'))
-NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5,data=deur,family='binomial'))
+NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10+TSCORE,data=deur,family='binomial'))
+NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10,data=deur,family='binomial'))
 
 
 save.image('/home/home1/vhasdcmaihoa/mvp039/AM/tinnitus_paper2_prs_mvpr3/mvp_tinprs_v1.R')
