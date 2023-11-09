@@ -149,17 +149,17 @@ deur <- deur1 #[sample(1:dim(deur1)[1], aamcount,replace=F),]
 deur$prsquantile <- cut(deur$TSCORE,breaks=quantile(deur$TSCORE,seq(0,1,0.2)))
 
 deur$prsscale <- scale(deur$TSCORE,center=TRUE,scale=TRUE)
-m1eur <- summary(glm(broad1~ PC1+PC2+PC3+PC4+PC5+prsscale,data=deur,family='binomial'))$coefficients[7:10,1:2]
+m1eur <- summary(glm(broad1~ PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10+prsscale,data=deur,family='binomial'))$coefficients[7:10,1:2]
 
-m1eur <- summary(glm(broad1~ PC1+PC2+PC3+PC4+PC5+prsquantile,data=deur,family='binomial'))$coefficients[7:10,1:2]
+m1eur <- summary(glm(broad1~ PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10+prsquantile,data=deur,family='binomial'))$coefficients[7:10,1:2]
 
 
 
 library(fmsb)
 
-NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5+TSCORE,data=deur,family='binomial'))
+NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10+TSCORE,data=deur,family='binomial'))
 
-NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5,data=deur,family='binomial'))
+NagelkerkeR2(glm(broad1 ~ PC1+PC2+PC3+PC4+PC5+PC6+PC7+PC8+PC9+PC10,data=deur,family='binomial'))
 
 
 save.image('/home/home1/vhasdcmaihoa/mvp039/AM/tinnitus_paper2_prs/mvp_tinprs_v1_his.R')
