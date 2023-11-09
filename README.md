@@ -5,6 +5,7 @@ Most analyses follow a main script that has been commented. Read for details.
 
 
 ### GWAS
+Code to perform GWAS
 
 #### UKB
 00_make_tinnitus_phenotype.sh: Construct tinnitus phenotype  
@@ -55,6 +56,7 @@ inversion.mi - script to perform meta-analysis of inversion stratified GWAS
   
 ### MiXeR
 Genetic architecture (univaraite and bivariate)  
+
 00_prepare_files.sh: Format files into MiXeR format  
 01_mixer_univariate.sh: Do univariate tests  
 02_mixer_univariate_plots.sh: Make univariate plots  
@@ -73,11 +75,14 @@ Polygenic risk score calculation
 ##### prsr3: UKBB -> MVP PRS  
 ##### prsr4: UKBB + MVP -> MVP R4 PRS  
 Both sets follow the same general scripts:  
+
 04_prs.sh: Convert SNP IDs into MVP ids  
 05_prscs_script.sh: PRS-CS analysis  
 06_prs_cal.sh: Compute scores in PLINK  
 07_prs_plot.sh: PRS association with tinnitus  
 
+##### Plot
+Code to plot PRS (as in figure 1b)
 
 ### rg
 Genetic correlations of tinnitus to other phenotypes
