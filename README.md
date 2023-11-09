@@ -1,11 +1,11 @@
 # Tinnitus  
 Codebase for 2023 Tinnitus GWAS manuscript (Clifford, Maihofer,..., Nievergelt)
 
-Most analyses follow a main script that has been commented. Read for details.
+Most analyses follow a main script that has been commented with operation details.
 
 
 ### GWAS
-Code to perform GWAS
+GWAS of UKB and MVP
 
 #### UKB
 00_make_tinnitus_phenotype.sh: Construct tinnitus phenotype  
@@ -19,14 +19,11 @@ Code to perform GWAS
 02_tinnitus_gwas_mar17_2020_chr8.sh: GWAS stratified by inversion status  
 03_concatenate_results.sh: Merge GWAS results files together  
 
-
 ### Meta analysis
-Perform meta analyses
+Perform meta-analyses
 
-01_mvp_ukbb_meta.sh: Calls to METAL. Details which meta analysis script corresponds to which analysis
-
-metal_input_scripts: Scripts used in METAL
-
+01_mvp_ukbb_meta.sh: Calls to METAL. Details which meta analysis script corresponds to which analysis  
+metal_input_scripts: Scripts used in METAL  
 
 ### CC GWAS
 Code for CC-GWAS analysis comparing tinnitus to hearing difficulty
@@ -34,6 +31,13 @@ Code for CC-GWAS analysis comparing tinnitus to hearing difficulty
 00_cc_gwas.sh: Analysis code for CC GWAS (data reformat and command)
 
 CCGWAS_strand.R: CC GWAS normally throws out variants with ambiguous alleles. Here we have hacked CC GWAS function to skip this step (our compared data are on the same strand, we prefer to retain these variants).
+
+### Cochlea
+Cochlea cell type enrichment analyses  
+
+01_magma_lui.sh: Enrichment analysis of Hoa et al. dataset  
+01_magma_michalski.sh: Enrichment of Jean et al. dataset  
+02_barplot...: code to make bar plots  
 
 ### Fine-mapping
 Polyfun based finemapping for summary statistics
@@ -43,13 +47,6 @@ Polyfun based finemapping for summary statistics
 01_credible_sets.sh: Calculate size of credible sets from polyfun outputs
 02_wide_format_genes.txt: Manipulate genes.txt from FUMA to obtain a wide format list of genes within the risk locus
 ldfiles_polyfun_tinnitus.xlsx: Polyfun requires huge LD reference files. The presupplied files cover specific windows. This file is used to determine which LD reference dataset file should be downloaded
-
-### Cochlea
-Cochlea cell type enrichment analyses  
-
-01_magma_lui.sh: Enrichment analysis of Hoa et al. dataset  
-01_magma_michalski.sh: Enrichment of Jean et al. dataset  
-02_barplot...: code to make bar plots  
 
 ### GSEM
 Genomic SEM analysis
@@ -75,7 +72,6 @@ Genetic architecture (univaraite and bivariate)
 02_mixer_univariate_plots.sh: Make univariate plots  
 03_mixer_bivariate.sh: Do bivariate tests  
 04_mixer_bivariate_plots.sh: Make bivariate plots  
-
 
 ### PRS
 Polygenic risk score calculation
